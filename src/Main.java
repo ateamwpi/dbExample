@@ -37,11 +37,11 @@ public class Main {
                     String name = sc.nextLine();
                     System.out.print("Room: ");
                     String room = sc.nextLine();
-                    rset = stmt.executeQuery("SELECT * FROM Location ORDER BY locID DESC");
-                    rset.next();
-                    int ID = rset.getInt("locID") + 1;
+//                    rset = stmt.executeQuery("SELECT * FROM Location ORDER BY locID DESC");
+//                    rset.next();
+//                    int ID = rset.getInt("locID") + 1;
                     String locType = (name.contains(",") ? "Physician" : "Service");
-                    stmt.execute("INSERT INTO Location VALUES (" + ID + ", '" + name + "', '" + room + "', '" + locType + "')");
+                    stmt.execute("INSERT INTO Location (NAME, ROOM, LOCTYPE) VALUES ('" + name + "', '" + room + "', '" + locType + "')");
                 }
                 else if(in.equals("2")) {
                     rset = stmt.executeQuery("SELECT * FROM Location ORDER BY locID ASC");
@@ -58,7 +58,7 @@ public class Main {
                 }
                 else if(in.equals("3")) {
                     stmt.execute("DROP TABLE Location");
-                    stmt.execute("CREATE TABLE Location ( locID integer primary key, name varchar(50), room varchar(10), locType varchar(10))");
+                    stmt.execute("CREATE TABLE Location ( locID integer primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), name varchar(50), room varchar(10), locType varchar(10))");
                 }
                 else if(in.equals("4")) {
                     break;
