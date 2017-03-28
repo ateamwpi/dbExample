@@ -24,25 +24,45 @@ public class Main {
         try {
             // substitute your database name for myDB
             connection = DriverManager.getConnection("jdbc:derby:myDB;create=true");
+            System.out.println("Java DB connection established!");
 
             Statement stmt = connection.createStatement();
             ResultSet rset = stmt.getResultSet();
 
-            //while(true) {
-                System.out.print("SQL> ");
-                String in = "CREATE TABLE Location ( " +
-                                "locID integer primary key, " +
-                                "name varchar2(50), " +
-                                "room varchar2(10), " +
-                                "locType varchar2(10) check locType in ('Physician', 'Service')" +
-                            ");";
-                //if(in.equals("quit")) break;
-                rset = stmt.executeQuery(in);
+            while(true) {
+                System.out.print("Menu:\n(1) Add new entry\n(2) Print current entries\n(3) Re-create table\n(4) Quit\nChoose an option: ");
+                String in = sc.nextLine();
+                if(in.equals("1")) {
+                    String ID = "0";
+                    String name = "Allergy";
+                    String room = "4G";
+                    String locType = "Service";
+                    stmt.execute("INSERT INTO Location VALUES (0, 'Allergy', '4G', 'Service')");// + ID + ", " + name + ", " + room + ", " + locType + ")");
+                }
+                else if(in.equals("2")) {
+                    rset = stmt.executeQuery("SELECT * FROM Location");
+                    System.out.println(" ID|                                             Name |     Room |   locType");
+                    System.out.println("---|--------------------------------------------------|----------|----------");
+                    while (rset.next()) {
+                        String ID = String.format("%1$"+3+ "s", rset.getString("locID"));
+                        String name = String.format("%1$"+50+ "s", rset.getString("name"));
+                        String room = String.format("%1$"+10+ "s", rset.getString("room"));
+                        String locType = String.format("%1$"+10+ "s", rset.getString("locType"));
+                        System.out.println(ID + "|" + name + "|" + room + "|" + locType);
+                    }
+                    System.out.println("---|--------------------------------------------------|----------|----------");
+                }
+                else if(in.equals("3")) {
+                    stmt.execute("DROP TABLE Location");
+                    stmt.execute("CREATE TABLE Location ( locID integer primary key, name varchar(50), room varchar(10), locType varchar(10))");
+                }
+                else if(in.equals("4")) {
+                    break;
+                }
+                System.out.println();
+            }
 
-
-            //}
-
-            rset.close();
+            if(rset != null) rset.close();
             stmt.close();
             connection.close();
 
@@ -51,6 +71,5 @@ public class Main {
             e.printStackTrace();
             return;
         }
-        System.out.println("Java DB connection established!");
     }
 }
