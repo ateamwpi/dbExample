@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="myDB">
-  <database-model serializer="dbm" rdbms="DERBY" format-version="4.0">
+  <database-model serializer="dbm" rdbms="DERBY" format-version="4.1">
     <root id="1"/>
     <schema id="2" parent="1" name="APP">
       <Current>1</Current>
@@ -34,8 +34,7 @@
       <Position>4</Position>
       <DataType>VARCHAR(10)|12</DataType>
     </column>
-    <key id="18" parent="13" name="SQL170328114155960">
-      <NameSurrogate>1</NameSurrogate>
+    <key id="18" parent="13" name="LOCATION_LOCID_PK">
       <ColNames>LOCID</ColNames>
       <Primary>1</Primary>
     </key>
