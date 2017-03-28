@@ -1,8 +1,12 @@
 /**
  * Created by WilsonWong on 3/19/2017.
  */
+
 import java.sql.*;
+import java.util.Scanner;
 public class Main {
+
+    private static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         System.out.println("-------Embedded Java DB Connection Testing --------");
@@ -10,12 +14,6 @@ public class Main {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         } catch (ClassNotFoundException e) {
             System.out.println("Java DB Driver not found. Add the classpath to your module.");
-            System.out.println("For IntelliJ do the following:");
-            System.out.println("File | Project Structure, Modules, Dependency tab");
-            System.out.println("Add by clicking on the green plus icon on the right of the window");
-            System.out.println("Select JARs or directories. Go to the folder where the Java JDK is installed");
-            System.out.println("Select the folder java/jdk1.8.xxx/db/lib where xxx is the version.");
-            System.out.println("Click OK, compile the code and run it.");
             e.printStackTrace();
             return;
         }
@@ -26,6 +24,28 @@ public class Main {
         try {
             // substitute your database name for myDB
             connection = DriverManager.getConnection("jdbc:derby:myDB;create=true");
+
+            Statement stmt = connection.createStatement();
+            ResultSet rset = stmt.getResultSet();
+
+            //while(true) {
+                System.out.print("SQL> ");
+                String in = "CREATE TABLE Location ( " +
+                                "locID integer primary key, " +
+                                "name varchar2(50), " +
+                                "room varchar2(10), " +
+                                "locType varchar2(10) check locType in ('Physician', 'Service')" +
+                            ");";
+                //if(in.equals("quit")) break;
+                rset = stmt.executeQuery(in);
+
+
+            //}
+
+            rset.close();
+            stmt.close();
+            connection.close();
+
         } catch (SQLException e) {
             System.out.println("Connection failed. Check output console.");
             e.printStackTrace();
